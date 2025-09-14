@@ -55,7 +55,7 @@ app/Http/Middleware/
 └── AuthSessionMiddleware.php    # Middleware de sessão
 
 public/images/
-└── Logo_IEI.svg                 # Logo do Instituto Ivoti
+└── Logo_IEI.jpg                 # Logo do Instituto Ivoti
 
 resources/css/
 └── auth.css                     # Estilos personalizados
@@ -141,3 +141,4 @@ Coordenador: coordenador@ivoti.edu.br / 123456
 ---
 
 **Desenvolvido com ❤️ para o Instituto Ivoti**
+
