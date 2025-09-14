@@ -1,0 +1,244 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+:root {
+  /* Cores principais usando oklch */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+  
+  /* Cores específicas da sidebar */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  
+  /* Cores da sidebar no modo escuro */
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Gradiente principal do fundo */
+.bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, #f8fafc, #dbeafe);
+}
+
+/* Gradiente da sidebar */
+.bg-gradient-to-b {
+  background-image: linear-gradient(to bottom, #1e3a8a, #1e293b);
+}
+
+/* Gradiente dos botões ativos */
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, #2563eb, #1d4ed8);
+}
+
+/* Gradiente do texto do título */
+.bg-gradient-to-r-text {
+  background-image: linear-gradient(to right, #1e3a8a, #334155);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Efeito de hover nos itens do menu */
+.menu-item-hover:hover {
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efeito de hover nos cards */
+.card-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Backdrop blur */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Transições suaves */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Sombra da sidebar */
+.sidebar-shadow {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Sombra dos cards */
+.card-shadow {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Sombra do header */
+.header-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Estilos específicos para a sidebar */
+.sidebar-item {
+  @apply w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200;
+}
+
+.sidebar-item-active {
+  @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md transform scale-105;
+}
+
+.sidebar-item-inactive {
+  @apply text-blue-100 hover:bg-blue-800 hover:text-white hover:transform hover:scale-105;
+}
+
+/* Estilos para o header */
+.header-title {
+  @apply text-2xl font-bold bg-gradient-to-r from-blue-900 to-slate-700 bg-clip-text text-transparent;
+}
+
+.header-subtitle {
+  @apply text-sm text-slate-600 font-medium;
+}
+
+/* Estilos para dropdowns */
+.dropdown-menu {
+  @apply absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50;
+}
+
+.dropdown-item {
+  @apply flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
+}
+
+/* Animações personalizadas */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.slide-out {
+  animation: slideOut 0.3s ease-in-out;
+}
+
+/* Efeitos de hover para botões */
+.btn-hover:hover {
+  @apply transform scale-105 shadow-lg;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Estilos para cards */
+.card-base {
+  @apply bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg rounded-lg;
+}
+
+.card-hover-effect:hover {
+  @apply shadow-xl transform scale-105;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Estilos para ícones */
+.icon-base {
+  @apply h-5 w-5;
+}
+
+.icon-large {
+  @apply h-6 w-6;
+}
+
+/* Estilos para gradientes de fundo */
+.bg-gradient-main {
+  background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 100%);
+}
+
+.bg-gradient-sidebar {
+  background: linear-gradient(180deg, #1e3a8a 0%, #1e293b 100%);
+}
+
+.bg-gradient-button {
+  background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.bg-gradient-text {
+  background: linear-gradient(90deg, #1e3a8a 0%, #334155 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

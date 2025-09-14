@@ -12,17 +12,26 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/forgot-password', [LoginController::class, 'showForgotPasswordForm'])->name('forgot-password');
 Route::post('/forgot-password', [LoginController::class, 'forgotPassword'])->name('forgot-password.post');
 
-// Rotas protegidas (exemplo)
-Route::middleware(['auth.session'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.admin');
-    })->name('dashboard');
+// Rotas protegidas do dashboard
+Route::middleware(['auth.session'])->prefix('dashboard')->group(function () {
+    // Dashboard principal
+    Route::get('/', [App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('dashboard');
     
-    Route::get('/dashboard/professor-turmas', function () {
-        return view('dashboard.professor');
-    })->name('dashboard.professor');
+    // Módulos principais (serão implementados)
+    Route::resource('alunos', App\Http\Controllers\Dashboard\AlunoController::class);
+    Route::resource('professores', App\Http\Controllers\Dashboard\ProfessorController::class);
+    Route::resource('turmas', App\Http\Controllers\Dashboard\TurmaController::class);
+    Route::resource('disciplinas', App\Http\Controllers\Dashboard\DisciplinaController::class);
+    Route::resource('cursos', App\Http\Controllers\Dashboard\CursoController::class);
     
-    Route::get('/dashboard/conselho-classe', function () {
-        return view('dashboard.coordenador');
-    })->name('dashboard.coordenador');
+    // Ciclos (Anos Letivos) routes
+    Route::get('ciclos', [App\Http\Controllers\Dashboard\CicloController::class, 'index'])->name('ciclos.index');
+    Route::post('ciclos', [App\Http\Controllers\Dashboard\CicloController::class, 'store'])->name('ciclos.store');
+    Route::put('ciclos/{id}', [App\Http\Controllers\Dashboard\CicloController::class, 'update'])->name('ciclos.update');
+    Route::delete('ciclos/{id}', [App\Http\Controllers\Dashboard\CicloController::class, 'destroy'])->name('ciclos.destroy');
+    
+    // Módulos especiais
+    Route::get('conselho-classe', [App\Http\Controllers\Dashboard\ConselhoClasseController::class, 'index'])->name('conselho-classe');
+    Route::get('professor-turmas', [App\Http\Controllers\Dashboard\ProfessorTurmaController::class, 'index'])->name('professor-turmas');
+    Route::get('configuracoes', [App\Http\Controllers\Dashboard\ConfiguracaoController::class, 'index'])->name('configuracoes');
 });
