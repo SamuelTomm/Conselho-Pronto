@@ -13,7 +13,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center py-4">
                     <div class="flex items-center">
-                        <img src="{{ asset('images/Logo_IEI.jpg') }}" alt="Logo IEI" class="h-8 w-auto mr-3">
+                        <img src="{{ asset('images/Logo_IEI.jpg') }}" alt="Logo IEI" class="h-10 w-auto mr-3">
                         <h1 class="text-xl font-semibold text-gray-900">Conselho Pronto - Professor</h1>
                     </div>
                     <div class="flex items-center space-x-4">
