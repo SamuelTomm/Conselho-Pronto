@@ -61,10 +61,25 @@
             transform: translateY(-2px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+        
+        /* Ajustes para zoom 75% */
+        .zoom-75 {
+            transform: scale(0.75);
+            transform-origin: top left;
+            width: 133.33%; /* Compensar o scale */
+            height: 133.33%;
+        }
+        
+        .container-75 {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-50">
-    <div class="min-h-screen flex flex-col lg:flex-row">
+    <div class="container-75">
+        <div class="zoom-75 min-h-screen flex flex-col lg:flex-row">
         <!-- Seção Esquerda - Branding -->
         <div class="lg:w-1/2 gradient-bg relative overflow-hidden flex flex-col justify-center items-center px-8 py-12 lg:py-24">
             <!-- Elementos decorativos -->
@@ -77,7 +92,10 @@
             <div class="relative z-10 text-center text-white max-w-md">
                 <!-- Logo -->
                 <div class="mb-8">
-                    <img src="{{ asset('images/Logo_IEI.jpg') }}" alt="Logo IEI" class="mx-auto h-20 w-auto mb-4">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-white mb-1">INSTITUTO IVOTI</h2>
+                        <p class="text-sm text-blue-100 italic">Schola semper reformanda</p>
+                    </div>
                     <h1 class="text-4xl font-bold mb-2">Conselho Pronto</h1>
                     <p class="text-lg text-blue-100 leading-relaxed">
                         Sistema completo de gestão educacional para acompanhamento acadêmico e conselhos de classe
@@ -249,6 +267,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
     
