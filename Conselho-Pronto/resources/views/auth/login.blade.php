@@ -92,7 +92,9 @@
             <div class="relative z-10 text-center text-white max-w-md">
                 <!-- Logo -->
                 <div class="mb-8">
-                    <div class="mb-6">
+                    <!-- Quadrado branco com logo -->
+                    <div class="bg-white bg-opacity-20 rounded-2xl p-8 mb-6 backdrop-blur-sm border border-white border-opacity-30">
+                        <img src="{{ asset('images/Logo_IEI.svg') }}" alt="Logo IEI" class="mx-auto h-20 w-auto mb-4">
                         <h2 class="text-2xl font-bold text-white mb-1">INSTITUTO IVOTI</h2>
                         <p class="text-sm text-blue-100 italic">Schola semper reformanda</p>
                     </div>
