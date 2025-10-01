@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['admin', 'coordenador', 'conselheiro', 'professor'])->default('professor');
+            $table->json('turmas_ids')->nullable(); // IDs das turmas como array
+            $table->json('disciplinas_ids')->nullable(); // IDs das disciplinas como array
+            $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

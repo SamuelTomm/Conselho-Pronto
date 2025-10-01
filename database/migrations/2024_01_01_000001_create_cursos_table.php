@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('cursos', function (Blueprint $table) {
@@ -16,8 +13,8 @@ return new class extends Migration
             $table->string('codigo')->unique();
             $table->string('nome');
             $table->text('descricao')->nullable();
-            $table->enum('tipo', ['Básico', 'Itinerário', 'Técnico']);
-            $table->string('cor')->default('blue');
+            $table->enum('tipo', ['Básico', 'Itinerário', 'Técnico'])->default('Básico');
+            $table->string('cor')->default('blue'); // blue, green, purple, orange, pink, emerald
             $table->integer('alunos_count')->default(0);
             $table->integer('disciplinas_count')->default(0);
             $table->boolean('ativo')->default(true);
@@ -25,9 +22,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('cursos');

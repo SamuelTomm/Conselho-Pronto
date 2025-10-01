@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('professores', function (Blueprint $table) {
@@ -17,12 +14,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('professor');
+            $table->enum('role', ['admin', 'coordenador', 'conselheiro', 'professor'])->default('professor');
             $table->string('especialidade')->nullable();
             $table->string('telefone')->nullable();
             $table->date('data_admissao')->nullable();
-            $table->text('turmas')->nullable();
-            $table->text('disciplinas')->nullable();
+            $table->json('turmas_ids')->nullable(); // IDs das turmas como array
+            $table->json('disciplinas_ids')->nullable(); // IDs das disciplinas como array
             $table->text('observacoes')->nullable();
             $table->boolean('ativo')->default(true);
             $table->rememberToken();
@@ -30,9 +27,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('professores');
