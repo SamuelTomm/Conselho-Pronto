@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('cursos', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo')->unique();
+            $table->string('nome');
+            $table->text('descricao')->nullable();
+            $table->enum('tipo', ['Básico', 'Itinerário', 'Técnico']);
+            $table->string('cor')->default('blue');
+            $table->integer('alunos_count')->default(0);
+            $table->integer('disciplinas_count')->default(0);
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }

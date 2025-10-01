@@ -24,6 +24,11 @@ Route::middleware(['auth.session'])->prefix('dashboard')->group(function () {
     Route::resource('disciplinas', App\Http\Controllers\Dashboard\DisciplinaController::class);
     Route::resource('cursos', App\Http\Controllers\Dashboard\CursoController::class);
     
+    // Rotas específicas para cursos
+    Route::get('cursos/{id}/turmas', [App\Http\Controllers\Dashboard\CursoController::class, 'turmas'])->name('cursos.turmas');
+    Route::get('cursos/{id}/materias', [App\Http\Controllers\Dashboard\CursoController::class, 'materias'])->name('cursos.materias');
+    Route::get('cursos/{id}/alunos', [App\Http\Controllers\Dashboard\CursoController::class, 'alunos'])->name('cursos.alunos');
+    
     // Ciclos (Anos Letivos) routes
     Route::get('ciclos', [App\Http\Controllers\Dashboard\CicloController::class, 'index'])->name('ciclos.index');
     Route::post('ciclos', [App\Http\Controllers\Dashboard\CicloController::class, 'store'])->name('ciclos.store');
@@ -34,4 +39,14 @@ Route::middleware(['auth.session'])->prefix('dashboard')->group(function () {
     Route::get('conselho-classe', [App\Http\Controllers\Dashboard\ConselhoClasseController::class, 'index'])->name('conselho-classe');
     Route::get('professor-turmas', [App\Http\Controllers\Dashboard\ProfessorTurmaController::class, 'index'])->name('professor-turmas');
     Route::get('configuracoes', [App\Http\Controllers\Dashboard\ConfiguracaoController::class, 'index'])->name('configuracoes');
+    
+    // Rotas específicas para professores
+    Route::prefix('professor')->group(function () {
+        Route::get('turmas', [App\Http\Controllers\Dashboard\ProfessorController::class, 'turmas'])->name('professor.turmas');
+        Route::get('disciplinas', [App\Http\Controllers\Dashboard\ProfessorController::class, 'disciplinas'])->name('professor.disciplinas');
+        Route::get('alunos', [App\Http\Controllers\Dashboard\ProfessorController::class, 'alunos'])->name('professor.alunos');
+    });
+    
+    // Rotas para notas
+    Route::resource('notas', App\Http\Controllers\Dashboard\NotaController::class);
 });

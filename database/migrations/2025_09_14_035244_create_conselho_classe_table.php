@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('conselho_classe', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('turma_id')->constrained('turmas');
+            $table->date('data');
+            $table->enum('status', ['agendado', 'em_andamento', 'realizado', 'cancelado'])->default('agendado');
+            $table->integer('participantes')->default(0);
+            $table->text('observacoes')->nullable();
+            $table->text('ata')->nullable();
             $table->timestamps();
         });
     }
