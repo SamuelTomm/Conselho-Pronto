@@ -67,6 +67,10 @@
             <!-- Menu de Navegação -->
             <nav class="mt-8 px-4">
                 <ul class="space-y-2">
+                    @php
+                        $userRole = session('user_data.role', 'professor');
+                    @endphp
+                    
                     <!-- Início -->
                     <li>
                         <a href="{{ route('dashboard') }}" 
@@ -76,7 +80,8 @@
                         </a>
                     </li>
                     
-                    <!-- Ciclos -->
+                    <!-- Ciclos - Apenas Admin, Coordenador e Conselheiro -->
+                    @if(in_array($userRole, ['admin', 'coordenador', 'conselheiro']))
                     <li>
                         <a href="{{ route('ciclos.index') }}" 
                            class="flex items-center px-4 py-3 {{ request()->routeIs('ciclos.*') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
@@ -84,8 +89,10 @@
                             <span class="{{ request()->routeIs('ciclos.*') ? 'font-medium' : '' }}">Ciclos</span>
                         </a>
                     </li>
+                    @endif
                     
-                    <!-- Cursos -->
+                    <!-- Cursos - Apenas Admin, Coordenador e Conselheiro -->
+                    @if(in_array($userRole, ['admin', 'coordenador', 'conselheiro']))
                     <li>
                         <a href="{{ route('cursos.index') }}" 
                            class="flex items-center px-4 py-3 {{ request()->routeIs('cursos.*') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
@@ -93,8 +100,9 @@
                             <span class="{{ request()->routeIs('cursos.*') ? 'font-medium' : '' }}">Cursos</span>
                         </a>
                     </li>
+                    @endif
                     
-                    <!-- Alunos -->
+                    <!-- Alunos - Todos podem ver, mas com permissões diferentes -->
                     <li>
                         <a href="{{ route('alunos.index') }}" 
                            class="flex items-center px-4 py-3 {{ request()->routeIs('alunos.*') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
@@ -103,7 +111,7 @@
                         </a>
                     </li>
                     
-                    <!-- Disciplinas -->
+                    <!-- Disciplinas - Todos podem ver, mas com permissões diferentes -->
                     <li>
                         <a href="{{ route('disciplinas.index') }}" 
                            class="flex items-center px-4 py-3 {{ request()->routeIs('disciplinas.*') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
@@ -112,7 +120,7 @@
                         </a>
                     </li>
                     
-                    <!-- Turmas -->
+                    <!-- Turmas - Todos podem ver, mas com permissões diferentes -->
                     <li>
                         <a href="{{ route('turmas.index') }}" 
                            class="flex items-center px-4 py-3 {{ request()->routeIs('turmas.*') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
@@ -121,7 +129,8 @@
                         </a>
                     </li>
                     
-                    <!-- Professores -->
+                    <!-- Professores - Apenas Admin e Coordenador -->
+                    @if(in_array($userRole, ['admin', 'coordenador']))
                     <li>
                         <a href="{{ route('professores.index') }}" 
                            class="flex items-center px-4 py-3 {{ request()->routeIs('professores.*') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
@@ -129,6 +138,40 @@
                             <span class="{{ request()->routeIs('professores.*') ? 'font-medium' : '' }}">Professores</span>
                         </a>
                     </li>
+                    @endif
+                    
+                    <!-- Minhas Turmas - Apenas para Professores -->
+                    @if($userRole === 'professor')
+                    <li>
+                        <a href="{{ route('professor.turmas') }}" 
+                           class="flex items-center px-4 py-3 {{ request()->routeIs('professor.turmas') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
+                            <i data-lucide="graduation-cap" class="h-5 w-5 mr-3"></i>
+                            <span class="{{ request()->routeIs('professor.turmas') ? 'font-medium' : '' }}">Minhas Turmas</span>
+                        </a>
+                    </li>
+                    @endif
+                    
+                    <!-- Minhas Disciplinas - Apenas para Professores -->
+                    @if($userRole === 'professor')
+                    <li>
+                        <a href="{{ route('professor.disciplinas') }}" 
+                           class="flex items-center px-4 py-3 {{ request()->routeIs('professor.disciplinas') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
+                            <i data-lucide="book" class="h-5 w-5 mr-3"></i>
+                            <span class="{{ request()->routeIs('professor.disciplinas') ? 'font-medium' : '' }}">Minhas Disciplinas</span>
+                        </a>
+                    </li>
+                    @endif
+                    
+                    <!-- Notas - Todos que podem editar notas -->
+                    @if(in_array($userRole, ['admin', 'coordenador', 'conselheiro', 'professor']))
+                    <li>
+                        <a href="{{ route('notas.index') }}" 
+                           class="flex items-center px-4 py-3 {{ request()->routeIs('notas.*') ? 'text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg transform scale-105' : 'text-blue-100 hover:bg-blue-800/50 hover:text-white hover:transform hover:scale-105' }} rounded-lg transition-all duration-200">
+                            <i data-lucide="clipboard-list" class="h-5 w-5 mr-3"></i>
+                            <span class="{{ request()->routeIs('notas.*') ? 'font-medium' : '' }}">Notas</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </nav>
         </div>
@@ -140,6 +183,18 @@
                 <div class="px-6 py-4">
                     <div class="flex items-center justify-between">
                         <div>
+                            @php
+                                $userRole = session('user_data.role', 'professor');
+                                $userName = session('user_data.name', 'Usuário');
+                                $roleTitles = [
+                                    'admin' => 'Administrador',
+                                    'coordenador' => 'Coordenador',
+                                    'conselheiro' => 'Conselheiro',
+                                    'professor' => 'Professor'
+                                ];
+                                $roleTitle = $roleTitles[$userRole] ?? 'Professor';
+                            @endphp
+                            
                             <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
                                 @if(request()->routeIs('ciclos.*'))
                                     Anos Letivos
@@ -153,6 +208,12 @@
                                     Turmas
                                 @elseif(request()->routeIs('professores.*'))
                                     Professores
+                                @elseif(request()->routeIs('professor.turmas'))
+                                    Minhas Turmas
+                                @elseif(request()->routeIs('professor.disciplinas'))
+                                    Minhas Disciplinas
+                                @elseif(request()->routeIs('notas.*'))
+                                    Notas
                                 @else
                                     Dashboard
                                 @endif
@@ -163,16 +224,37 @@
                                 @elseif(request()->routeIs('cursos.*'))
                                     Gerencie os cursos disponíveis
                                 @elseif(request()->routeIs('alunos.*'))
-                                    Gerencie os alunos cadastrados
+                                    @if($userRole === 'professor')
+                                        Visualize os alunos das suas turmas
+                                    @else
+                                        Gerencie os alunos cadastrados
+                                    @endif
                                 @elseif(request()->routeIs('disciplinas.*'))
-                                    Gerencie as disciplinas do sistema
+                                    @if($userRole === 'professor')
+                                        Visualize as suas disciplinas
+                                    @else
+                                        Gerencie as disciplinas do sistema
+                                    @endif
                                 @elseif(request()->routeIs('turmas.*'))
-                                    Gerencie as turmas do sistema
+                                    @if($userRole === 'professor')
+                                        Visualize as suas turmas
+                                    @else
+                                        Gerencie as turmas do sistema
+                                    @endif
                                 @elseif(request()->routeIs('professores.*'))
                                     Gerencie os professores cadastrados
+                                @elseif(request()->routeIs('professor.turmas'))
+                                    Visualize e gerencie suas turmas
+                                @elseif(request()->routeIs('professor.disciplinas'))
+                                    Visualize e gerencie suas disciplinas
+                                @elseif(request()->routeIs('notas.*'))
+                                    Gerencie as notas dos alunos
                                 @else
                                     Conselho Pronto - Sistema de Gestão Educacional
                                 @endif
+                            </p>
+                            <p class="text-xs text-slate-500 mt-1">
+                                Logado como: <span class="font-medium">{{ $userName }}</span> - {{ $roleTitle }}
                             </p>
                         </div>
                         
@@ -182,12 +264,17 @@
                                     class="flex items-center space-x-3 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                                     <span class="text-white font-medium text-sm">
-                                        {{ substr(session('user_email', 'U'), 0, 1) }}
+                                        {{ substr(session('user_data.name', 'U'), 0, 1) }}
                                     </span>
                                 </div>
-                                <span class="hidden md:block text-gray-700 font-medium">
-                                    {{ session('user_email', 'Usuário') }}
-                                </span>
+                                <div class="hidden md:block text-left">
+                                    <div class="text-gray-700 font-medium text-sm">
+                                        {{ session('user_data.name', 'Usuário') }}
+                                    </div>
+                                    <div class="text-gray-500 text-xs">
+                                        {{ $roleTitle }}
+                                    </div>
+                                </div>
                                 <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
                             </button>
                             

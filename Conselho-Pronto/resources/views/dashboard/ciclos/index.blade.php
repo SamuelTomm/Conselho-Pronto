@@ -229,7 +229,10 @@
                                     <h4 class="text-lg text-blue-800 font-semibold">{{ $trimestre['nome'] }}</h4>
                                     <p class="text-blue-600 text-sm">{{ $trimestre['periodo'] }}</p>
                                 </div>
-                                <button class="px-4 py-2 border border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 rounded-md text-sm">
+                                <button 
+                                    onclick="openDashboardModal({{ json_encode($trimestre) }})"
+                                    class="px-4 py-2 border border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 rounded-md text-sm"
+                                >
                                     <i data-lucide="eye" class="h-4 w-4 mr-2 inline"></i>
                                     Visualizar Dashboard
                                 </button>
@@ -247,6 +250,411 @@
                 >
                     Fechar
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal do Dashboard -->
+<div id="modal-dashboard" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeDashboardModal()"></div>
+        
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-7xl sm:w-full">
+            <!-- Header do Dashboard -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl font-semibold text-white" id="dashboard-title">
+                            Dashboard do Trimestre
+                        </h3>
+                        <p class="text-blue-100 text-sm" id="dashboard-subtitle">
+                            Visualize turmas, alunos e itinerários
+                        </p>
+                    </div>
+                    <button 
+                        onclick="closeDashboardModal()"
+                        class="text-white hover:text-blue-200 transition-colors"
+                    >
+                        <i data-lucide="x" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Conteúdo do Dashboard -->
+            <div class="bg-gray-50 p-6">
+                <!-- Tabs de Navegação -->
+                <div class="mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-8">
+                            <button 
+                                onclick="switchTab('turmas')"
+                                id="tab-turmas"
+                                class="tab-button active py-2 px-1 border-b-2 font-medium text-sm"
+                            >
+                                <i data-lucide="users" class="h-4 w-4 mr-2 inline"></i>
+                                Turmas e Alunos
+                            </button>
+                            <button 
+                                onclick="switchTab('itinerarios')"
+                                id="tab-itinerarios"
+                                class="tab-button py-2 px-1 border-b-2 font-medium text-sm"
+                            >
+                                <i data-lucide="book-open" class="h-4 w-4 mr-2 inline"></i>
+                                Itinerários/Técnicos
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Conteúdo das Tabs -->
+                <div id="tab-content">
+                    <!-- Tab Turmas -->
+                    <div id="content-turmas" class="tab-content">
+                        <div class="bg-white rounded-lg shadow-sm border">
+                            <!-- Header da seção Turmas -->
+                            <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-200 px-6 py-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-green-800">Turmas e Alunos</h4>
+                                        <p class="text-green-600 text-sm">Gerencie turmas, alunos e suas notas</p>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
+                                            <i data-lucide="plus" class="h-4 w-4 mr-2 inline"></i>
+                                            Nova Turma
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Filtros -->
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex items-center space-x-2">
+                                        <label class="text-sm text-gray-600">Filtrar por:</label>
+                                        <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+                                            <option value="">Todas as turmas</option>
+                                            <option value="1ano">1º Ano</option>
+                                            <option value="2ano">2º Ano</option>
+                                            <option value="3ano">3º Ano</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <label class="text-sm text-gray-600">Buscar:</label>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Nome do aluno ou turma"
+                                            class="px-3 py-1 border border-gray-300 rounded-md text-sm w-64"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Lista de Turmas -->
+                            <div class="p-6">
+                                <div class="space-y-4">
+                                    <!-- Turma 1 -->
+                                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                        <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <h5 class="font-semibold text-gray-800">1º Ano A - Manhã</h5>
+                                                    <p class="text-sm text-gray-600">30 alunos • Professor: João Silva</p>
+                                                </div>
+                                                <div class="flex items-center space-x-2">
+                                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Ativa</span>
+                                                    <button class="text-blue-600 hover:text-blue-800">
+                                                        <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Lista de Alunos (expandida) -->
+                                        <div class="p-4 bg-white">
+                                            <div class="overflow-x-auto">
+                                                <table class="w-full text-sm">
+                                                    <thead>
+                                                        <tr class="border-b border-gray-200">
+                                                            <th class="text-left py-2 font-medium text-gray-700">Aluno</th>
+                                                            <th class="text-center py-2 font-medium text-gray-700">Matrícula</th>
+                                                            <th class="text-center py-2 font-medium text-gray-700">Nota 1</th>
+                                                            <th class="text-center py-2 font-medium text-gray-700">Nota 2</th>
+                                                            <th class="text-center py-2 font-medium text-gray-700">Nota 3</th>
+                                                            <th class="text-center py-2 font-medium text-gray-700">Média</th>
+                                                            <th class="text-center py-2 font-medium text-gray-700">Status</th>
+                                                            <th class="text-center py-2 font-medium text-gray-700">Ações</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                                            <td class="py-2">
+                                                                <div class="flex items-center">
+                                                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                                        <span class="text-blue-600 font-medium text-xs">AS</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="font-medium text-gray-900">Ana Silva</div>
+                                                                        <div class="text-gray-500 text-xs">Física</div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center py-2 text-gray-600">2024001</td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">8.5</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">9.0</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">7.5</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-semibold">8.3</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Aprovado</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <button class="text-blue-600 hover:text-blue-800 mr-2">
+                                                                    <i data-lucide="edit" class="h-4 w-4"></i>
+                                                                </button>
+                                                                <button class="text-gray-600 hover:text-gray-800">
+                                                                    <i data-lucide="eye" class="h-4 w-4"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                                            <td class="py-2">
+                                                                <div class="flex items-center">
+                                                                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                                                        <span class="text-purple-600 font-medium text-xs">BS</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="font-medium text-gray-900">Bruno Santos</div>
+                                                                        <div class="text-gray-500 text-xs">Física</div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center py-2 text-gray-600">2024002</td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs">6.0</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">7.0</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">6.5</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs font-semibold">6.5</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Recuperação</span>
+                                                            </td>
+                                                            <td class="text-center py-2">
+                                                                <button class="text-blue-600 hover:text-blue-800 mr-2">
+                                                                    <i data-lucide="edit" class="h-4 w-4"></i>
+                                                                </button>
+                                                                <button class="text-gray-600 hover:text-gray-800">
+                                                                    <i data-lucide="eye" class="h-4 w-4"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Turma 2 -->
+                                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                                        <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <h5 class="font-semibold text-gray-800">2º Ano B - Tarde</h5>
+                                                    <p class="text-sm text-gray-600">28 alunos • Professor: Maria Costa</p>
+                                                </div>
+                                                <div class="flex items-center space-x-2">
+                                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Ativa</span>
+                                                    <button class="text-blue-600 hover:text-blue-800">
+                                                        <i data-lucide="chevron-right" class="h-4 w-4"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tab Itinerários/Técnicos -->
+                    <div id="content-itinerarios" class="tab-content hidden">
+                        <div class="bg-white rounded-lg shadow-sm border">
+                            <!-- Header da seção Itinerários -->
+                            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-purple-200 px-6 py-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-purple-800">Itinerários e Cursos Técnicos</h4>
+                                        <p class="text-purple-600 text-sm">Gerencie matérias e itinerários formativos</p>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm">
+                                            <i data-lucide="plus" class="h-4 w-4 mr-2 inline"></i>
+                                            Nova Matéria
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Filtros -->
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex items-center space-x-2">
+                                        <label class="text-sm text-gray-600">Tipo:</label>
+                                        <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+                                            <option value="">Todos</option>
+                                            <option value="itinerario">Itinerário</option>
+                                            <option value="tecnico">Técnico</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <label class="text-sm text-gray-600">Buscar:</label>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Nome da matéria ou professor"
+                                            class="px-3 py-1 border border-gray-300 rounded-md text-sm w-64"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Lista de Itinerários/Técnicos -->
+                            <div class="p-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <!-- Card Itinerário -->
+                                    <div class="border border-purple-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                                                    <i data-lucide="book-open" class="h-5 w-5 text-purple-600"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-semibold text-gray-800">Física Aplicada</h5>
+                                                    <p class="text-sm text-gray-600">Itinerário</p>
+                                                </div>
+                                            </div>
+                                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Ativo</span>
+                                        </div>
+                                        <div class="space-y-2 text-sm text-gray-600">
+                                            <div class="flex items-center">
+                                                <i data-lucide="user" class="h-4 w-4 mr-2"></i>
+                                                <span>Prof. João Silva</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i data-lucide="users" class="h-4 w-4 mr-2"></i>
+                                                <span>25 alunos</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i data-lucide="clock" class="h-4 w-4 mr-2"></i>
+                                                <span>40h semanais</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 flex space-x-2">
+                                            <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded text-sm">
+                                                <i data-lucide="eye" class="h-4 w-4 mr-1 inline"></i>
+                                                Ver Detalhes
+                                            </button>
+                                            <button class="px-3 py-2 border border-purple-300 text-purple-700 hover:bg-purple-50 rounded text-sm">
+                                                <i data-lucide="edit" class="h-4 w-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Card Técnico -->
+                                    <div class="border border-indigo-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                                                    <i data-lucide="wrench" class="h-5 w-5 text-indigo-600"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-semibold text-gray-800">Informática</h5>
+                                                    <p class="text-sm text-gray-600">Técnico</p>
+                                                </div>
+                                            </div>
+                                            <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">Ativo</span>
+                                        </div>
+                                        <div class="space-y-2 text-sm text-gray-600">
+                                            <div class="flex items-center">
+                                                <i data-lucide="user" class="h-4 w-4 mr-2"></i>
+                                                <span>Prof. Maria Costa</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i data-lucide="users" class="h-4 w-4 mr-2"></i>
+                                                <span>30 alunos</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i data-lucide="clock" class="h-4 w-4 mr-2"></i>
+                                                <span>60h semanais</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 flex space-x-2">
+                                            <button class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded text-sm">
+                                                <i data-lucide="eye" class="h-4 w-4 mr-1 inline"></i>
+                                                Ver Detalhes
+                                            </button>
+                                            <button class="px-3 py-2 border border-indigo-300 text-indigo-700 hover:bg-indigo-50 rounded text-sm">
+                                                <i data-lucide="edit" class="h-4 w-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Card Itinerário -->
+                                    <div class="border border-purple-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                        <div class="flex items-start justify-between mb-3">
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                                                    <i data-lucide="microscope" class="h-5 w-5 text-purple-600"></i>
+                                                </div>
+                                                <div>
+                                                    <h5 class="font-semibold text-gray-800">Química Experimental</h5>
+                                                    <p class="text-sm text-gray-600">Itinerário</p>
+                                                </div>
+                                            </div>
+                                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Ativo</span>
+                                        </div>
+                                        <div class="space-y-2 text-sm text-gray-600">
+                                            <div class="flex items-center">
+                                                <i data-lucide="user" class="h-4 w-4 mr-2"></i>
+                                                <span>Prof. Carlos Lima</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i data-lucide="users" class="h-4 w-4 mr-2"></i>
+                                                <span>22 alunos</span>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <i data-lucide="clock" class="h-4 w-4 mr-2"></i>
+                                                <span>35h semanais</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 flex space-x-2">
+                                            <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded text-sm">
+                                                <i data-lucide="eye" class="h-4 w-4 mr-1 inline"></i>
+                                                Ver Detalhes
+                                            </button>
+                                            <button class="px-3 py-2 border border-purple-300 text-purple-700 hover:bg-purple-50 rounded text-sm">
+                                                <i data-lucide="edit" class="h-4 w-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -341,5 +749,70 @@ function deleteAno(id) {
         form.submit();
     }
 }
+
+// Modal do Dashboard
+function openDashboardModal(trimestre) {
+    const modal = document.getElementById('modal-dashboard');
+    document.getElementById('dashboard-title').textContent = `Dashboard - ${trimestre.nome}`;
+    document.getElementById('dashboard-subtitle').textContent = `Período: ${trimestre.periodo}`;
+    modal.classList.remove('hidden');
+    
+    // Reinicializar ícones após abrir o modal
+    setTimeout(() => {
+        lucide.createIcons();
+    }, 100);
+}
+
+function closeDashboardModal() {
+    document.getElementById('modal-dashboard').classList.add('hidden');
+}
+
+// Sistema de Tabs
+function switchTab(tabName) {
+    // Remover classes ativas de todas as tabs
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active', 'border-blue-500', 'text-blue-600');
+        button.classList.add('border-transparent', 'text-gray-500');
+    });
+    
+    // Esconder todos os conteúdos
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    
+    // Ativar tab selecionada
+    const activeButton = document.getElementById(`tab-${tabName}`);
+    const activeContent = document.getElementById(`content-${tabName}`);
+    
+    activeButton.classList.add('active', 'border-blue-500', 'text-blue-600');
+    activeButton.classList.remove('border-transparent', 'text-gray-500');
+    activeContent.classList.remove('hidden');
+    
+    // Reinicializar ícones após trocar de tab
+    setTimeout(() => {
+        lucide.createIcons();
+    }, 100);
+}
+
+// Inicializar com a primeira tab ativa
+document.addEventListener('DOMContentLoaded', function() {
+    // Adicionar estilos CSS para as tabs
+    const style = document.createElement('style');
+    style.textContent = `
+        .tab-button.active {
+            border-color: #3b82f6;
+            color: #2563eb;
+        }
+        .tab-button {
+            border-color: transparent;
+            color: #6b7280;
+        }
+        .tab-button:hover {
+            color: #374151;
+            border-color: #d1d5db;
+        }
+    `;
+    document.head.appendChild(style);
+});
 </script>
 @endsection

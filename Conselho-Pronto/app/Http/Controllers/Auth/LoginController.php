@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -34,43 +35,32 @@ class LoginController extends Controller
                 ->withInput($request->except('password'));
         }
 
-        // Credenciais de teste hardcoded conforme especificado
-        $testCredentials = [
-            'admin@ivoti.edu.br' => [
-                'password' => '123456',
-                'role' => 'admin',
-                'redirect' => '/dashboard'
-            ],
-            'professor@ivoti.edu.br' => [
-                'password' => '123456',
-                'role' => 'professor',
-                'redirect' => '/dashboard/professor-turmas'
-            ],
-            'coordenador@ivoti.edu.br' => [
-                'password' => '123456',
-                'role' => 'coordenador',
-                'redirect' => '/dashboard/conselho-classe'
-            ]
-        ];
-
         $email = $request->email;
         $password = $request->password;
 
-        // Verificar credenciais de teste
-        if (isset($testCredentials[$email])) {
-            $credentials = $testCredentials[$email];
-            
-            if ($password === $credentials['password']) {
-                // Simular sessão de usuário
-                session([
-                    'user_email' => $email,
-                    'user_role' => $credentials['role'],
-                    'authenticated' => true
-                ]);
+        // Buscar usuário no banco de dados
+        $user = User::where('email', $email)->where('active', true)->first();
 
-                return redirect($credentials['redirect'])
-                    ->with('success', 'Login realizado com sucesso!');
-            }
+        if ($user && Hash::check($password, $user->password)) {
+            // Criar sessão de usuário com dados do banco
+            session([
+                'user_email' => $user->email,
+                'user_role' => $user->role,
+                'user_name' => $user->name,
+                'user_data' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                    'turmas_ids' => $user->turmas_ids ?? [],
+                    'disciplinas_ids' => $user->disciplinas_ids ?? [],
+                    'active' => $user->active
+                ],
+                'authenticated' => true
+            ]);
+
+            return redirect('/dashboard')
+                ->with('success', 'Login realizado com sucesso!');
         }
 
         // Se chegou aqui, credenciais inválidas
