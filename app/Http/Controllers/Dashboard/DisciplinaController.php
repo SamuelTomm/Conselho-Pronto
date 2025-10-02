@@ -23,13 +23,13 @@ class DisciplinaController extends Controller
             $query->where(function($q) use ($search) {
                 $q->where('codigo', 'like', '%'.$search.'%')
                   ->orWhere('nome', 'like', '%'.$search.'%')
-                  ->orWhere('curso', 'like', '%'.$search.'%')
+                  ->orWhere('curso_nome', 'like', '%'.$search.'%')
                   ->orWhere('descricao', 'like', '%'.$search.'%');
             });
         }
 
         if ($curso) {
-            $query->where('curso', $curso);
+            $query->where('curso_nome', $curso);
         }
 
         if ($periodo) {
@@ -47,7 +47,7 @@ class DisciplinaController extends Controller
 
         // Dados para filtros
         $periodosDisponiveis = Disciplina::select('periodo')->distinct()->pluck('periodo')->sort()->values();
-        $cursosDisponiveis = Disciplina::select('curso')->distinct()->pluck('curso')->sort()->values();
+        $cursosDisponiveis = Disciplina::select('curso_nome')->distinct()->pluck('curso_nome')->sort()->values();
 
         return view('dashboard.disciplinas.index', compact(
             'disciplinas', 
@@ -73,7 +73,7 @@ class DisciplinaController extends Controller
         $request->validate([
             'codigo' => 'required|string|max:255|unique:disciplinas',
             'nome' => 'required|string|max:255',
-            'curso' => 'required|string|max:255',
+            'curso_nome' => 'required|string|max:255',
             'carga_horaria' => 'required|integer|min:1',
             'periodo' => 'required|string|max:255',
             'descricao' => 'nullable|string',
@@ -102,7 +102,7 @@ class DisciplinaController extends Controller
         $request->validate([
             'codigo' => 'required|string|max:255|unique:disciplinas,codigo,' . $disciplina->id,
             'nome' => 'required|string|max:255',
-            'curso' => 'required|string|max:255',
+            'curso_nome' => 'required|string|max:255',
             'carga_horaria' => 'required|integer|min:1',
             'periodo' => 'required|string|max:255',
             'descricao' => 'nullable|string',

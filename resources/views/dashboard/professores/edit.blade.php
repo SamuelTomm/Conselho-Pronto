@@ -112,22 +112,46 @@
                                         <option value="">Selecione a função</option>
                                         <option value="professor" {{ old('role', $professor->role) == 'professor' ? 'selected' : '' }}>Professor</option>
                                         <option value="coordenador" {{ old('role', $professor->role) == 'coordenador' ? 'selected' : '' }}>Coordenador</option>
-                                        <option value="conselheiro" {{ old('role', $professor->role) == 'conselheiro' ? 'selected' : '' }}>Conselheiro</option>
                                     </select>
                                     @error('role')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <!-- Especialidade -->
+                                <!-- Especialidades -->
                                 <div>
-                                    <label for="especialidade" class="block text-sm font-medium text-slate-700 mb-2">Especialidade</label>
-                                    <input type="text" 
-                                           id="especialidade" 
-                                           name="especialidade" 
-                                           value="{{ old('especialidade', $professor->especialidade ?? '') }}"
-                                           class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('especialidade') border-red-500 @enderror"
-                                           placeholder="Ex: Matemática, Física, História">
+                                    <label for="especialidade" class="block text-sm font-medium text-slate-700 mb-2">Especialidades</label>
+                                    
+                                    <!-- Campo oculto para enviar os dados -->
+                                    <input type="hidden" name="especialidade" id="especialidade-hidden" value="{{ old('especialidade', $professor->especialidade ?? '') }}">
+                                    
+                                    <!-- Select para adicionar especialidades -->
+                                    <select id="especialidade" 
+                                            class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('especialidade') border-red-500 @enderror">
+                                        <option value="">Selecione uma especialidade para adicionar</option>
+                                        <option value="História">História</option>
+                                        <option value="Matemática">Matemática</option>
+                                        <option value="Português">Português</option>
+                                        <option value="Geografia">Geografia</option>
+                                        <option value="Física">Física</option>
+                                        <option value="Química">Química</option>
+                                        <option value="Biologia">Biologia</option>
+                                        <option value="Educação Física">Educação Física</option>
+                                        <option value="Arte">Arte</option>
+                                        <option value="Filosofia">Filosofia</option>
+                                        <option value="Sociologia">Sociologia</option>
+                                        <option value="Inglês">Inglês</option>
+                                        <option value="Espanhol">Espanhol</option>
+                                        <option value="Informática">Informática</option>
+                                        <option value="Eletrotécnica">Eletrotécnica</option>
+                                    </select>
+                                    
+                                    <!-- Container para mostrar as especialidades selecionadas -->
+                                    <div id="especialidades-container" class="mt-2 flex flex-wrap gap-2">
+                                        <!-- As especialidades selecionadas aparecerão aqui -->
+                                    </div>
+                                    
+                                    <p class="text-xs text-gray-500 mt-1">Selecione especialidades do dropdown acima para adicioná-las</p>
                                     @error('especialidade')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
@@ -171,26 +195,49 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Turmas -->
                                 <div>
-                                    <label for="turmas" class="block text-sm font-medium text-slate-700 mb-2">Turmas</label>
-                                    <textarea id="turmas" 
-                                              name="turmas" 
-                                              rows="3"
-                                              class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('turmas') border-red-500 @enderror"
-                                              placeholder="Liste as turmas atribuídas ao professor...">{{ old('turmas', $professor->turmas ?? '') }}</textarea>
-                                    @error('turmas')
+                                    <label for="turmas_ids" class="block text-sm font-medium text-slate-700 mb-2">Turmas</label>
+                                    
+                                    <!-- Campo oculto para enviar os dados -->
+                                    <input type="hidden" name="turmas_ids" id="turmas-hidden" value="{{ old('turmas_ids', json_encode($professor->turmas_ids ?? [])) }}">
+                                    
+                                    <!-- Select para adicionar turmas -->
+                                    <select id="turmas-select" 
+                                            class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('turmas_ids') border-red-500 @enderror">
+                                        <option value="">Selecione uma turma para adicionar</option>
+                                        @foreach($turmas as $turma)
+                                            <option value="{{ $turma->id }}" data-nome="{{ $turma->nome }}">
+                                                {{ $turma->nome }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    
+                                    <!-- Container para mostrar as turmas selecionadas -->
+                                    <div id="turmas-container" class="mt-2 flex flex-wrap gap-2">
+                                        <!-- As turmas selecionadas aparecerão aqui -->
+                                    </div>
+                                    
+                                    <p class="text-xs text-gray-500 mt-1">Selecione turmas do dropdown acima para adicioná-las</p>
+                                    @error('turmas_ids')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <!-- Disciplinas -->
                                 <div>
-                                    <label for="disciplinas" class="block text-sm font-medium text-slate-700 mb-2">Disciplinas</label>
-                                    <textarea id="disciplinas" 
-                                              name="disciplinas" 
-                                              rows="3"
-                                              class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('disciplinas') border-red-500 @enderror"
-                                              placeholder="Liste as disciplinas que o professor leciona...">{{ old('disciplinas', $professor->disciplinas ?? '') }}</textarea>
-                                    @error('disciplinas')
+                                    <label for="disciplinas_ids" class="block text-sm font-medium text-slate-700 mb-2">Disciplinas</label>
+                                    <select id="disciplinas_ids" 
+                                            name="disciplinas_ids[]" 
+                                            multiple
+                                            class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('disciplinas_ids') border-red-500 @enderror"
+                                            size="4">
+                                        @foreach($disciplinas as $disciplina)
+                                            <option value="{{ $disciplina->id }}" {{ in_array($disciplina->id, old('disciplinas_ids', $professor->disciplinas_ids ?? [])) ? 'selected' : '' }}>
+                                                {{ $disciplina->nome }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <p class="text-xs text-gray-500 mt-1">Segure Ctrl (ou Cmd no Mac) para selecionar múltiplas disciplinas</p>
+                                    @error('disciplinas_ids')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
@@ -261,5 +308,110 @@
 <script>
 // Initialize Lucide icons
 lucide.createIcons();
+
+// Sistema de especialidades múltiplas
+document.addEventListener('DOMContentLoaded', function() {
+    const especialidadeSelect = document.getElementById('especialidade');
+    const especialidadeHidden = document.getElementById('especialidade-hidden');
+    const especialidadesContainer = document.getElementById('especialidades-container');
+    
+    // Array para armazenar especialidades selecionadas
+    let especialidadesSelecionadas = [];
+    
+    // Carregar especialidades do old input ou do professor
+    const oldEspecialidade = especialidadeHidden.value;
+    if (oldEspecialidade) {
+        // Se for uma string com vírgulas, dividir em array
+        especialidadesSelecionadas = oldEspecialidade.includes(',') 
+            ? oldEspecialidade.split(',').map(e => e.trim()).filter(e => e)
+            : [oldEspecialidade];
+        renderizarEspecialidades();
+    }
+    
+    // Inicializar opções disponíveis
+    atualizarOpcoesDisponiveis();
+    
+    // Event listener para o select
+    especialidadeSelect.addEventListener('change', function() {
+        const valorSelecionado = this.value;
+        
+        if (valorSelecionado && !especialidadesSelecionadas.includes(valorSelecionado)) {
+            especialidadesSelecionadas.push(valorSelecionado);
+            renderizarEspecialidades();
+            atualizarCampoHidden();
+            atualizarOpcoesDisponiveis();
+            
+            // Resetar o select
+            this.value = '';
+        }
+    });
+    
+    // Função para renderizar as especialidades selecionadas
+    function renderizarEspecialidades() {
+        especialidadesContainer.innerHTML = '';
+        
+        especialidadesSelecionadas.forEach((especialidade, index) => {
+            const tag = document.createElement('div');
+            tag.className = 'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200';
+            tag.innerHTML = `
+                <span>${especialidade}</span>
+                <button type="button" 
+                        onclick="removerEspecialidade(${index})" 
+                        class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none">
+                    <i data-lucide="x" class="h-3 w-3"></i>
+                </button>
+            `;
+            especialidadesContainer.appendChild(tag);
+        });
+        
+        // Re-inicializar ícones Lucide para os novos elementos
+        lucide.createIcons();
+    }
+    
+    // Função para remover especialidade
+    window.removerEspecialidade = function(index) {
+        especialidadesSelecionadas.splice(index, 1);
+        renderizarEspecialidades();
+        atualizarCampoHidden();
+        atualizarOpcoesDisponiveis();
+    };
+    
+    // Função para atualizar as opções disponíveis no select
+    function atualizarOpcoesDisponiveis() {
+        // Lista completa de especialidades
+        const todasEspecialidades = [
+            'História', 'Matemática', 'Português', 'Geografia', 'Física', 
+            'Química', 'Biologia', 'Educação Física', 'Arte', 'Filosofia', 
+            'Sociologia', 'Inglês', 'Espanhol', 'Informática', 'Eletrotécnica'
+        ];
+        
+        // Filtrar especialidades já selecionadas
+        const especialidadesDisponiveis = todasEspecialidades.filter(
+            especialidade => !especialidadesSelecionadas.includes(especialidade)
+        );
+        
+        // Limpar o select (exceto a primeira opção)
+        especialidadeSelect.innerHTML = '<option value="">Selecione uma especialidade para adicionar</option>';
+        
+        // Adicionar opções disponíveis
+        especialidadesDisponiveis.forEach(especialidade => {
+            const option = document.createElement('option');
+            option.value = especialidade;
+            option.textContent = especialidade;
+            especialidadeSelect.appendChild(option);
+        });
+    }
+    
+    // Função para atualizar o campo hidden
+    function atualizarCampoHidden() {
+        // Como o controller espera uma string única, vamos enviar todas as especialidades
+        // separadas por vírgula ou apenas a primeira se preferir
+        especialidadeHidden.value = especialidadesSelecionadas.join(', ');
+    }
+    
+    // Tornar as funções globais para acesso via onclick
+    window.renderizarEspecialidades = renderizarEspecialidades;
+    window.atualizarCampoHidden = atualizarCampoHidden;
+});
 </script>
 @endsection

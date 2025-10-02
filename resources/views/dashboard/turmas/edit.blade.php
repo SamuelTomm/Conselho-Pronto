@@ -56,13 +56,16 @@
                                 <!-- Nome -->
                                 <div>
                                     <label for="nome" class="block text-sm font-medium text-slate-700 mb-2">Nome da Turma *</label>
-                                    <input type="text" 
-                                           id="nome" 
-                                           name="nome" 
-                                           value="{{ old('nome', $turma->nome) }}"
-                                           class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('nome') border-red-500 @enderror"
-                                           placeholder="Ex: 3º Ano A, 2º Ano B, 1º Técnico em Informática"
-                                           required>
+                                    <select id="nome" 
+                                            name="nome" 
+                                            class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('nome') border-red-500 @enderror"
+                                            required>
+                                        <option value="">Selecione a turma</option>
+                                        <option value="A" {{ old('nome', $turma->nome) == 'A' ? 'selected' : '' }}>A</option>
+                                        <option value="B" {{ old('nome', $turma->nome) == 'B' ? 'selected' : '' }}>B</option>
+                                        <option value="C" {{ old('nome', $turma->nome) == 'C' ? 'selected' : '' }}>C</option>
+                                        <option value="Magistério" {{ old('nome', $turma->nome) == 'Magistério' ? 'selected' : '' }}>Magistério</option>
+                                    </select>
                                     @error('nome')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
@@ -75,10 +78,7 @@
                                             name="nivel" 
                                             class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('nivel') border-red-500 @enderror"
                                             required>
-                                        <option value="">Selecione o nível</option>
-                                        <option value="Ensino Fundamental" {{ old('nivel', $turma->nivel) == 'Ensino Fundamental' ? 'selected' : '' }}>Ensino Fundamental</option>
-                                        <option value="Ensino Médio" {{ old('nivel', $turma->nivel) == 'Ensino Médio' ? 'selected' : '' }}>Ensino Médio</option>
-                                        <option value="Técnico" {{ old('nivel', $turma->nivel) == 'Técnico' ? 'selected' : '' }}>Técnico</option>
+                                        <option value="Ensino Médio" selected>Ensino Médio</option>
                                     </select>
                                     @error('nivel')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -88,13 +88,17 @@
                                 <!-- Ano -->
                                 <div>
                                     <label for="ano" class="block text-sm font-medium text-slate-700 mb-2">Ano Letivo *</label>
-                                    <input type="text" 
-                                           id="ano" 
-                                           name="ano" 
-                                           value="{{ old('ano', $turma->ano) }}"
-                                           class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('ano') border-red-500 @enderror"
-                                           placeholder="Ex: 2024"
-                                           required>
+                                    <select id="ano" 
+                                            name="ano" 
+                                            class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('ano') border-red-500 @enderror"
+                                            required>
+                                        <option value="">Selecione o ano</option>
+                                        @for($i = 1; $i <= 12; $i++)
+                                            <option value="{{ $i }}" {{ old('ano', $turma->ano) == $i ? 'selected' : '' }}>
+                                                {{ $i }}º Ano
+                                            </option>
+                                        @endfor
+                                    </select>
                                     @error('ano')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror

@@ -113,9 +113,34 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
+                                </div>
 
-                        <!-- Notas -->
+                                <!-- Trimestre -->
+                                <div>
+                                    <label for="trimestre_id" class="block text-sm font-medium text-slate-700 mb-2">Trimestre *</label>
+                                    <select id="trimestre_id" 
+                                            name="trimestre_id" 
+                                            class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('trimestre_id') border-red-500 @enderror"
+                                            required>
+                                        <option value="">Selecione o trimestre</option>
+                                        @if($trimestreAtivo)
+                                            <option value="{{ $trimestreAtivo->id }}" {{ old('trimestre_id') == $trimestreAtivo->id ? 'selected' : '' }}>
+                                                {{ $trimestreAtivo->nome }} - {{ $trimestreAtivo->periodo }}
+                                            </option>
+                                        @endif
+                                    </select>
+                                    @error('trimestre_id')
+                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
+                                    @if($trimestreAtivo)
+                                        <p class="text-blue-600 text-xs mt-1">
+                                            <i data-lucide="info" class="h-3 w-3 inline mr-1"></i>
+                                            Trimestre ativo: {{ $trimestreAtivo->nome }}
+                                        </p>
+                                    @endif
+                                </div>
+
+                                <!-- Notas -->
                         <div class="mb-8">
                             <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                                 <i data-lucide="award" class="h-5 w-5 mr-2 text-green-600"></i>

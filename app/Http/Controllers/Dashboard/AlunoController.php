@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\Aluno;
+use App\Models\Turma;
+use App\Models\Curso;
 
 class AlunoController extends Controller
 {
@@ -43,8 +45,8 @@ class AlunoController extends Controller
                 $q->where('matricula', 'like', "%{$search}%")
                   ->orWhere('nome', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('turma', 'like', "%{$search}%")
-                  ->orWhere('curso', 'like', "%{$search}%");
+                  ->orWhere('turma_nome', 'like', "%{$search}%")
+                  ->orWhere('curso_nome', 'like', "%{$search}%");
             });
         }
 
@@ -53,11 +55,11 @@ class AlunoController extends Controller
         }
 
         if ($turma) {
-            $query->where('turma', $turma);
+            $query->where('turma_nome', $turma);
         }
 
         if ($curso) {
-            $query->where('curso', $curso);
+            $query->where('curso_nome', $curso);
         }
 
         // Ordenar por nome
@@ -70,8 +72,8 @@ class AlunoController extends Controller
         // Estatísticas
         $totalAlunos = Aluno::count();
         $alunosAtivos = Aluno::where('status', 'Ativo')->count();
-        $cursosTecnicos = Aluno::where('curso', 'like', '%Técnico%')->count();
-        $totalTurmas = Aluno::distinct('turma')->count('turma');
+        $cursosTecnicos = Aluno::where('curso_nome', 'like', '%Técnico%')->count();
+        $totalTurmas = Aluno::distinct('turma_nome')->count('turma_nome');
 
         return view('dashboard.alunos.index', compact(
             'alunos', 
@@ -89,7 +91,10 @@ class AlunoController extends Controller
 
     public function create()
     {
-        return view('dashboard.alunos.create');
+        $turmas = Turma::select('id', 'nome')->orderBy('nome')->get();
+        $cursos = Curso::select('id', 'nome')->orderBy('nome')->get();
+        
+        return view('dashboard.alunos.create', compact('turmas', 'cursos'));
     }
 
     public function store(Request $request)
@@ -101,15 +106,34 @@ class AlunoController extends Controller
             'telefone' => 'nullable|string|max:20',
             'data_nascimento' => 'required|date',
             'endereco' => 'nullable|string|max:500',
-            'turma' => 'required|string|max:100',
-            'curso' => 'required|string|max:100',
+            'turma_id' => 'required|exists:turmas,id',
+            'curso_id' => 'required|exists:cursos,id',
             'responsavel' => 'required|string|max:255',
             'telefone_responsavel' => 'nullable|string|max:20',
             'status' => 'required|in:Ativo,Inativo,Transferido',
             'observacoes' => 'nullable|string|max:1000',
         ]);
 
-        Aluno::create($request->all());
+        // Buscar dados da turma e curso
+        $turma = Turma::findOrFail($request->turma_id);
+        $curso = Curso::findOrFail($request->curso_id);
+
+        Aluno::create([
+            'matricula' => $request->matricula,
+            'nome' => $request->nome,
+            'email' => $request->email,
+            'telefone' => $request->telefone,
+            'data_nascimento' => $request->data_nascimento,
+            'endereco' => $request->endereco,
+            'turma_id' => $request->turma_id,
+            'curso_id' => $request->curso_id,
+            'turma_nome' => $turma->nome,
+            'curso_nome' => $curso->nome,
+            'responsavel' => $request->responsavel,
+            'telefone_responsavel' => $request->telefone_responsavel,
+            'status' => $request->status,
+            'observacoes' => $request->observacoes,
+        ]);
 
         return redirect()->route('alunos.index')
             ->with('success', 'Aluno criado com sucesso!');
@@ -122,7 +146,10 @@ class AlunoController extends Controller
 
     public function edit(Aluno $aluno)
     {
-        return view('dashboard.alunos.edit', compact('aluno'));
+        $turmas = Turma::select('id', 'nome')->orderBy('nome')->get();
+        $cursos = Curso::select('id', 'nome')->orderBy('nome')->get();
+        
+        return view('dashboard.alunos.edit', compact('aluno', 'turmas', 'cursos'));
     }
 
     public function update(Request $request, Aluno $aluno)
@@ -134,15 +161,34 @@ class AlunoController extends Controller
             'telefone' => 'nullable|string|max:20',
             'data_nascimento' => 'required|date',
             'endereco' => 'nullable|string|max:500',
-            'turma' => 'required|string|max:100',
-            'curso' => 'required|string|max:100',
+            'turma_id' => 'required|exists:turmas,id',
+            'curso_id' => 'required|exists:cursos,id',
             'responsavel' => 'required|string|max:255',
             'telefone_responsavel' => 'nullable|string|max:20',
             'status' => 'required|in:Ativo,Inativo,Transferido',
             'observacoes' => 'nullable|string|max:1000',
         ]);
 
-        $aluno->update($request->all());
+        // Buscar dados da turma e curso
+        $turma = Turma::findOrFail($request->turma_id);
+        $curso = Curso::findOrFail($request->curso_id);
+
+        $aluno->update([
+            'matricula' => $request->matricula,
+            'nome' => $request->nome,
+            'email' => $request->email,
+            'telefone' => $request->telefone,
+            'data_nascimento' => $request->data_nascimento,
+            'endereco' => $request->endereco,
+            'turma_id' => $request->turma_id,
+            'curso_id' => $request->curso_id,
+            'turma_nome' => $turma->nome,
+            'curso_nome' => $curso->nome,
+            'responsavel' => $request->responsavel,
+            'telefone_responsavel' => $request->telefone_responsavel,
+            'status' => $request->status,
+            'observacoes' => $request->observacoes,
+        ]);
 
         return redirect()->route('alunos.index')
             ->with('success', 'Aluno atualizado com sucesso!');

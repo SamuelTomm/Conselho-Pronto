@@ -124,7 +124,7 @@
                         <!-- Filtro por Curso -->
                         <select name="curso" class="border border-blue-200 rounded-md px-3 py-1 focus:border-blue-400 focus:ring-1 focus:ring-blue-400" onchange="this.form.submit()">
                             <option value="">Todos os Cursos</option>
-                            @foreach($cursos as $cursoOption)
+                            @foreach($cursosDisponiveis as $cursoOption)
                                 <option value="{{ $cursoOption }}" {{ request('curso') == $cursoOption ? 'selected' : '' }}>
                                     {{ $cursoOption }}
                                 </option>
@@ -134,7 +134,7 @@
                         <!-- Filtro por Período -->
                         <select name="periodo" class="border border-blue-200 rounded-md px-3 py-1 focus:border-blue-400 focus:ring-1 focus:ring-blue-400" onchange="this.form.submit()">
                             <option value="">Todos os Períodos</option>
-                            @foreach($periodos as $periodoOption)
+                            @foreach($periodosDisponiveis as $periodoOption)
                                 <option value="{{ $periodoOption }}" {{ request('periodo') == $periodoOption ? 'selected' : '' }}>
                                     {{ $periodoOption }}
                                 </option>
@@ -164,15 +164,15 @@
                             <div class="flex-1">
                                 <!-- Badge do Código -->
                                 <div class="flex items-center space-x-2 mb-2">
-                                    <span class="px-2 py-1 rounded-full text-xs font-medium {{ \App\Models\Disciplina::getCorClass($disciplina['cor']) }}">
-                                        {{ $disciplina['codigo'] }}
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {{ $disciplina->codigo }}
                                     </span>
                                 </div>
                                 
                                 <!-- Nome e Curso -->
-                                <h3 class="font-semibold text-slate-800 mb-1">{{ $disciplina['nome'] }}</h3>
-                                <p class="text-sm text-slate-600 mb-2">{{ $disciplina['curso'] }}</p>
-                                <p class="text-xs text-slate-500">{{ $disciplina['descricao'] }}</p>
+                                <h3 class="font-semibold text-slate-800 mb-1">{{ $disciplina->nome }}</h3>
+                                <p class="text-sm text-slate-600 mb-2">{{ $disciplina->curso_nome ?? 'N/A' }}</p>
+                                <p class="text-xs text-slate-500">{{ $disciplina->descricao ?? 'N/A' }}</p>
                             </div>
                         </div>
 
@@ -181,11 +181,11 @@
                             <div class="flex items-center space-x-4">
                                 <div class="flex items-center space-x-1">
                                     <i data-lucide="users" class="h-4 w-4"></i>
-                                    <span>{{ $disciplina['total_alunos'] }}</span>
+                                    <span>{{ $disciplina->total_alunos ?? 0 }}</span>
                                 </div>
                                 <div class="flex items-center space-x-1">
                                     <i data-lucide="clock" class="h-4 w-4"></i>
-                                    <span>{{ $disciplina['carga_horaria'] }}h</span>
+                                    <span>{{ $disciplina->carga_horaria ?? 0 }}h</span>
                                 </div>
                             </div>
                         </div>

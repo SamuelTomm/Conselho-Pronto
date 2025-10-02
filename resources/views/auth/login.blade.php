@@ -93,10 +93,8 @@
                 <!-- Logo -->
                 <div class="mb-8">
                     <!-- Quadrado branco com logo -->
-                    <div class="bg-white bg-opacity-20 rounded-2xl p-8 mb-6 backdrop-blur-sm border border-white border-opacity-30">
-                        <img src="{{ asset('images/Logo_IEI.jpg') }}" alt="Logo IEI" class="mx-auto h-40 w-auto mb-4">
-                        <h2 class="text-2xl font-bold text-white mb-1">INSTITUTO IVOTI</h2>
-                        <p class="text-sm text-blue-100 italic">Schola semper reformanda</p>
+                    <div class="bg-white bg-opacity-20 rounded-2xl px-0.5 py-4 mb-6 backdrop-blur-sm border border-white border-opacity-30 flex items-center justify-center h-64">
+                        <img src="{{ asset('images/Logo_IEI.jpg') }}" alt="Logo Instituto Ivoti" class="w-full h-full object-contain rounded-2xl">
                     </div>
                     <h1 class="text-4xl font-bold mb-2">Conselho Pronto</h1>
                     <p class="text-lg text-blue-100 leading-relaxed">
@@ -155,15 +153,6 @@
                         <p class="text-gray-600">Entre com suas credenciais para continuar</p>
                     </div>
                     
-                    <!-- Box de credenciais de teste -->
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                        <h3 class="text-sm font-semibold text-blue-900 mb-2">Credenciais de Teste:</h3>
-                        <div class="text-xs text-blue-800 space-y-1">
-                            <div><strong>Admin:</strong> admin@ivoti.edu.br / 123456</div>
-                            <div><strong>Professor:</strong> professor@ivoti.edu.br / 123456</div>
-                            <div><strong>Coordenador:</strong> coordenador@ivoti.edu.br / 123456</div>
-                        </div>
-                    </div>
                     
                     <!-- Mensagens de erro/sucesso -->
                     @if ($errors->any())

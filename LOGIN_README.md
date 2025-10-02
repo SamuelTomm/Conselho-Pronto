@@ -13,9 +13,9 @@ Sistema de autenticação moderno e responsivo para o Instituto Ivoti, desenvolv
 
 ### ✅ Sistema de Autenticação
 - **3 Tipos de Usuário**:
-  - **Admin**: `admin@ivoti.edu.br` / `123456` → `/dashboard`
-  - **Professor**: `professor@ivoti.edu.br` / `123456` → `/dashboard/professor-turmas`
-  - **Coordenador**: `coordenador@ivoti.edu.br` / `123456` → `/dashboard/conselho-classe`
+  - **Admin**: Acesso completo ao sistema
+  - **Professor**: Acesso às suas turmas e disciplinas
+  - **Coordenador**: Acesso aos conselhos de classe
 
 ### ✅ Validações e Segurança
 - Validação de email obrigatório e formato válido
@@ -99,15 +99,8 @@ php artisan serve
 
 ### 3. Acessar o Sistema
 - Abra o navegador em `http://localhost:8000`
-- Use as credenciais de teste fornecidas
+- Faça login com suas credenciais
 - Teste os diferentes tipos de usuário
-
-### 4. Credenciais de Teste
-```
-Admin: admin@ivoti.edu.br / 123456
-Professor: professor@ivoti.edu.br / 123456
-Coordenador: coordenador@ivoti.edu.br / 123456
-```
 
 ## 📱 Responsividade
 

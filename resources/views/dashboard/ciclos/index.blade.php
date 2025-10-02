@@ -55,14 +55,24 @@
                     <tr class="bg-gradient-to-r from-blue-100 to-slate-100 border-b border-blue-200">
                         <th class="text-slate-700 font-semibold px-4 py-3 text-left">Ano</th>
                         <th class="text-slate-700 font-semibold px-4 py-3 text-left">Descrição</th>
+                        <th class="text-slate-700 font-semibold px-4 py-3 text-left">Trimestre Ativo</th>
                         <th class="w-20 text-center text-slate-700 font-semibold px-4 py-3">Ações</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    @foreach($anos as $ano)
+                    @forelse($anos as $ano)
                     <tr class="hover:bg-blue-50/50 transition-colors">
-                        <td class="font-medium text-slate-700 px-4 py-3">{{ $ano['ano'] }}</td>
-                        <td class="text-slate-600 px-4 py-3">{{ $ano['descricao'] }}</td>
+                        <td class="font-medium text-slate-700 px-4 py-3">{{ $ano->ano }}</td>
+                        <td class="text-slate-600 px-4 py-3">{{ $ano->descricao }}</td>
+                        <td class="text-slate-600 px-4 py-3">
+                            @if($ano->trimestreAtivo)
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    {{ $ano->trimestreAtivo->nome }}
+                                </span>
+                            @else
+                                <span class="text-gray-400 text-sm">Nenhum</span>
+                            @endif
+                        </td>
                         <td class="text-center px-4 py-3">
                             <div class="relative inline-block text-left" x-data="{ open: false }">
                                 <button 
@@ -91,6 +101,13 @@
                                             Visualizar Trimestres
                                         </button>
                                         <button 
+                                            onclick="openTrocarTrimestreModal({{ json_encode($ano) }})"
+                                            class="flex items-center w-full px-4 py-2 text-sm text-blue-600 hover:bg-blue-50"
+                                        >
+                                            <i data-lucide="refresh-cw" class="h-4 w-4 mr-2"></i>
+                                            Trocar Trimestre Ativo
+                                        </button>
+                                        <button 
                                             onclick="openModal({{ json_encode($ano) }})"
                                             class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
@@ -98,7 +115,7 @@
                                             Alterar
                                         </button>
                                         <button 
-                                            onclick="deleteAno({{ $ano['id'] }})"
+                                            onclick="deleteAno({{ $ano->id }})"
                                             class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                                         >
                                             <i data-lucide="trash-2" class="h-4 w-4 mr-2"></i>
@@ -109,12 +126,23 @@
                             </div>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="3" class="text-center py-8 text-gray-500">
+                            <div class="flex flex-col items-center">
+                                <i data-lucide="calendar" class="h-12 w-12 text-gray-300 mb-4"></i>
+                                <p class="text-lg font-medium">Nenhum ano letivo cadastrado</p>
+                                <p class="text-sm">Clique em "Incluir Novo Ano" para começar</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
         
         <!-- Paginação -->
+        @if(count($anos) > 0)
         <div class="flex items-center justify-between mt-4">
             <p class="text-sm text-gray-500">
                 Showing 1 to {{ count($anos) }} of {{ count($anos) }} entries
@@ -129,6 +157,7 @@
                 </button>
             </div>
         </div>
+        @endif
     </div>
 </div>
 
@@ -173,6 +202,28 @@
                                         placeholder="Ex: Ano letivo de 2025"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Data de Início</label>
+                                        <input 
+                                            type="date" 
+                                            id="data_inicio"
+                                            name="data_inicio"
+                                            required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Data de Fim</label>
+                                        <input 
+                                            type="date" 
+                                            id="data_fim"
+                                            name="data_fim"
+                                            required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             
@@ -222,7 +273,7 @@
                         </p>
                         
                         <div class="space-y-4">
-                            @foreach($trimestres as $trimestre)
+                            @forelse($trimestres as $trimestre)
                             <!-- Card do {{ $trimestre['nome'] }} -->
                             <div class="flex items-center justify-between p-4 border border-blue-100 bg-blue-50/30 hover:bg-blue-50/50 transition-colors rounded-lg">
                                 <div>
@@ -237,7 +288,13 @@
                                     Visualizar Dashboard
                                 </button>
                             </div>
-                            @endforeach
+                            @empty
+                            <div class="text-center py-8 text-gray-500">
+                                <i data-lucide="calendar-days" class="h-12 w-12 text-gray-300 mb-4 mx-auto"></i>
+                                <p class="text-lg font-medium">Nenhum trimestre configurado</p>
+                                <p class="text-sm">Os trimestres serão exibidos aqui quando houver anos letivos cadastrados</p>
+                            </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -660,6 +717,67 @@
     </div>
 </div>
 
+<!-- Modal para Trocar Trimestre Ativo -->
+<div id="modal-trocar-trimestre" class="fixed inset-0 z-50 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeTrocarTrimestreModal()"></div>
+        
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2" id="trocar-trimestre-title">
+                            Trocar Trimestre Ativo
+                        </h3>
+                        <p class="text-sm text-gray-500 mb-4" id="trocar-trimestre-description">
+                            Selecione qual trimestre deve estar ativo para este ano letivo.
+                        </p>
+                        
+                        <form id="form-trocar-trimestre" method="POST">
+                            @csrf
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Trimestre Ativo</label>
+                                    <select 
+                                        id="trimestre_id"
+                                        name="trimestre_id"
+                                        required
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">Selecione um trimestre</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Mensagem de erro -->
+                            <div id="trocar-trimestre-error-message" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-md hidden">
+                                <p class="text-sm text-red-600">Mensagem de erro aqui</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button 
+                    type="submit" 
+                    form="form-trocar-trimestre"
+                    id="trocar-trimestre-submit-btn"
+                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                    Trocar Trimestre
+                </button>
+                <button 
+                    onclick="closeTrocarTrimestreModal()"
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // Initialize Lucide icons
 lucide.createIcons();
@@ -673,6 +791,8 @@ function openModal(ano = null) {
         // Preencher formulário para edição
         document.getElementById('ano').value = ano.ano;
         document.getElementById('descricao').value = ano.descricao;
+        document.getElementById('data_inicio').value = ano.data_inicio;
+        document.getElementById('data_fim').value = ano.data_fim;
         document.getElementById('form-title').textContent = 'Editar Ano Letivo';
         document.getElementById('submit-btn').textContent = 'Salvar';
         form.action = '{{ route("ciclos.update", ":id") }}'.replace(':id', ano.id);
@@ -707,6 +827,44 @@ function openTrimestresModal(ano) {
 
 function closeTrimestresModal() {
     document.getElementById('modal-trimestres').classList.add('hidden');
+}
+
+// Modal para Trocar Trimestre Ativo
+function openTrocarTrimestreModal(ano) {
+    const modal = document.getElementById('modal-trocar-trimestre');
+    const form = document.getElementById('form-trocar-trimestre');
+    const select = document.getElementById('trimestre_id');
+    
+    // Limpar opções anteriores
+    select.innerHTML = '<option value="">Selecione um trimestre</option>';
+    
+    // Buscar trimestres do ano via AJAX
+    fetch(`/dashboard/ciclos/${ano.id}/trimestres`)
+        .then(response => response.json())
+        .then(data => {
+            data.trimestres.forEach(trimestre => {
+                const option = document.createElement('option');
+                option.value = trimestre.id;
+                option.textContent = `${trimestre.nome} - ${trimestre.periodo}`;
+                if (trimestre.id === ano.trimestre_ativo_id) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar trimestres:', error);
+        });
+    
+    // Configurar formulário
+    form.action = `{{ route('ciclos.trocar-trimestre', ':id') }}`.replace(':id', ano.id);
+    document.getElementById('trocar-trimestre-title').textContent = `Trocar Trimestre Ativo - ${ano.ano}`;
+    
+    modal.classList.remove('hidden');
+}
+
+function closeTrocarTrimestreModal() {
+    document.getElementById('modal-trocar-trimestre').classList.add('hidden');
 }
 
 // Filtros e Busca

@@ -16,7 +16,7 @@
             <i data-lucide="bell" class="h-4 w-4 mr-2 inline"></i>
             Notificações
             <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {{ count($alertas) }}
+                {{ count($alertas ?? []) }}
             </span>
         </button>
     </div>
@@ -25,124 +25,70 @@
 <!-- Cards de Estatísticas (4 colunas) -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
     <!-- Total de Turmas -->
-    <div class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg">
+    <a href="{{ route('turmas.index') }}" class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg cursor-pointer group">
         <div class="p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-600">Total de Turmas</p>
-                    <p class="text-2xl font-bold text-slate-900">5</p>
+                    <p class="text-sm font-medium text-slate-600 group-hover:text-blue-600 transition-colors">Total de Turmas</p>
+                    <p class="text-2xl font-bold text-slate-900 group-hover:text-blue-700 transition-colors">5</p>
                     <p class="text-xs text-green-600 mt-1">+2 este mês</p>
                 </div>
-                <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-full shadow-md">
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-full shadow-md group-hover:shadow-lg transition-all duration-300">
                     <i data-lucide="users" class="h-6 w-6 text-white"></i>
                 </div>
             </div>
         </div>
-    </div>
+    </a>
     
     <!-- Total de Alunos -->
-    <div class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg">
+    <a href="{{ route('alunos.index') }}" class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg cursor-pointer group">
         <div class="p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-600">Total de Alunos</p>
-                    <p class="text-2xl font-bold text-slate-900">{{ $metricas['alunosAtivos'] }}</p>
+                    <p class="text-sm font-medium text-slate-600 group-hover:text-slate-700 transition-colors">Total de Alunos</p>
+                    <p class="text-2xl font-bold text-slate-900 group-hover:text-slate-800 transition-colors">{{ $metricas['alunosAtivos'] }}</p>
                     <p class="text-xs text-blue-600 mt-1">+12 este mês</p>
                 </div>
-                <div class="bg-gradient-to-r from-slate-500 to-slate-600 p-3 rounded-full shadow-md">
+                <div class="bg-gradient-to-r from-slate-500 to-slate-600 p-3 rounded-full shadow-md group-hover:shadow-lg transition-all duration-300">
                     <i data-lucide="graduation-cap" class="h-6 w-6 text-white"></i>
                 </div>
             </div>
         </div>
-    </div>
+    </a>
     
     <!-- Taxa de Aprovação -->
-    <div class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg">
+    <a href="{{ route('notas.index') }}" class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg cursor-pointer group">
         <div class="p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-600">Taxa de Aprovação</p>
-                    <p class="text-2xl font-bold text-slate-900">{{ $metricas['aprovacaoGeral'] }}%</p>
+                    <p class="text-sm font-medium text-slate-600 group-hover:text-green-600 transition-colors">Taxa de Aprovação</p>
+                    <p class="text-2xl font-bold text-slate-900 group-hover:text-green-700 transition-colors">{{ $metricas['aprovacaoGeral'] }}%</p>
                     <p class="text-xs text-green-600 mt-1">+2.1% este mês</p>
                 </div>
-                <div class="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-full shadow-md">
+                <div class="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-full shadow-md group-hover:shadow-lg transition-all duration-300">
                     <i data-lucide="award" class="h-6 w-6 text-white"></i>
                 </div>
             </div>
         </div>
-    </div>
+    </a>
     
     <!-- Conselhos Pendentes -->
-    <div class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg">
+    <a href="{{ route('conselho-classe') }}" class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg cursor-pointer group">
         <div class="p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-600">Conselhos Pendentes</p>
-                    <p class="text-2xl font-bold text-slate-900">{{ $metricas['turmasPendentes'] }}</p>
+                    <p class="text-sm font-medium text-slate-600 group-hover:text-orange-600 transition-colors">Conselhos Pendentes</p>
+                    <p class="text-2xl font-bold text-slate-900 group-hover:text-orange-700 transition-colors">{{ $metricas['turmasPendentes'] }}</p>
                     <p class="text-xs text-orange-600 mt-1">2 agendados</p>
                 </div>
-                <div class="bg-gradient-to-r from-orange-500 to-red-600 p-3 rounded-full shadow-md">
+                <div class="bg-gradient-to-r from-orange-500 to-red-600 p-3 rounded-full shadow-md group-hover:shadow-lg transition-all duration-300">
                     <i data-lucide="clock" class="h-6 w-6 text-white"></i>
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
 
-<!-- Ações Rápidas (4 colunas) -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <!-- Gerenciar Turmas -->
-    <a href="{{ route('turmas.index') }}" class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg p-6 group">
-        <div class="flex items-center space-x-4">
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-3 rounded-lg shadow-md group-hover:shadow-lg transition-all duration-300">
-                <i data-lucide="users" class="h-6 w-6 text-white"></i>
-            </div>
-            <div>
-                <h3 class="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">Gerenciar Turmas</h3>
-                <p class="text-sm text-slate-600">Acessar e configurar turmas</p>
-            </div>
-        </div>
-    </a>
-    
-    <!-- Conselhos de Classe -->
-    <a href="{{ route('conselho-classe') }}" class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg p-6 group">
-        <div class="flex items-center space-x-4">
-            <div class="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-lg shadow-md group-hover:shadow-lg transition-all duration-300">
-                <i data-lucide="file-bar-chart" class="h-6 w-6 text-white"></i>
-            </div>
-            <div>
-                <h3 class="font-semibold text-slate-900 group-hover:text-green-600 transition-colors">Conselhos de Classe</h3>
-                <p class="text-sm text-slate-600">Acompanhar conselhos</p>
-            </div>
-        </div>
-    </a>
-    
-    <!-- Professores -->
-    <a href="{{ route('professores.index') }}" class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg p-6 group">
-        <div class="flex items-center space-x-4">
-            <div class="bg-gradient-to-r from-purple-500 to-purple-600 p-3 rounded-lg shadow-md group-hover:shadow-lg transition-all duration-300">
-                <i data-lucide="user-check" class="h-6 w-6 text-white"></i>
-            </div>
-            <div>
-                <h3 class="font-semibold text-slate-900 group-hover:text-purple-600 transition-colors">Professores</h3>
-                <p class="text-sm text-slate-600">Gerenciar permissões</p>
-            </div>
-        </div>
-    </a>
-    
-    <!-- Relatórios -->
-    <a href="#" class="bg-white/80 backdrop-blur-sm border-blue-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:transform hover:scale-105 rounded-lg p-6 group">
-        <div class="flex items-center space-x-4">
-            <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-3 rounded-lg shadow-md group-hover:shadow-lg transition-all duration-300">
-                <i data-lucide="download" class="h-6 w-6 text-white"></i>
-            </div>
-            <div>
-                <h3 class="font-semibold text-slate-900 group-hover:text-orange-600 transition-colors">Relatórios</h3>
-                <p class="text-sm text-slate-600">Gerar relatórios</p>
-            </div>
-        </div>
-    </a>
-</div>
 
 <!-- Métricas de Desempenho (2 colunas) -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -223,7 +169,7 @@
         </div>
         <div class="p-6">
             <div class="space-y-4">
-                @foreach($relatorios as $relatorio)
+                @foreach($relatorios ?? [] as $relatorio)
                 <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div class="flex-1">
                         <h4 class="text-sm font-medium text-slate-900">{{ $relatorio['titulo'] }}</h4>
@@ -262,7 +208,7 @@
         </div>
         <div class="p-6">
             <div class="space-y-4">
-                @foreach($alertas as $alerta)
+                @foreach($alertas ?? [] as $alerta)
                 <div class="flex items-start space-x-3">
                     <div class="flex-shrink-0">
                         @if($alerta['prioridade'] == 'alta')
@@ -294,7 +240,7 @@
         </div>
         <div class="p-6">
             <div class="space-y-4">
-                @foreach($conselhos as $conselho)
+                @foreach($conselhos ?? [] as $conselho)
                 <div class="flex items-center justify-between">
                     <div>
                         <h4 class="text-sm font-medium text-slate-900">{{ $conselho['turma'] }}</h4>
@@ -326,7 +272,7 @@
         </div>
         <div class="p-6">
             <div class="space-y-4">
-                @foreach($eventos as $evento)
+                @foreach($eventos ?? [] as $evento)
                 <div class="flex items-center space-x-3">
                     <div class="flex-shrink-0">
                         @if($evento['tipo'] == 'conselho')
@@ -398,7 +344,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($turmas as $turma)
+                    @foreach($turmas ?? [] as $turma)
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">{{ $turma['nome'] }}</div>
@@ -435,7 +381,7 @@
         <!-- Paginação -->
         <div class="flex items-center justify-between mt-6">
             <div class="text-sm text-gray-700">
-                Mostrando <span class="font-medium">1</span> a <span class="font-medium">{{ count($turmas) }}</span> de <span class="font-medium">{{ count($turmas) }}</span> resultados
+                Mostrando <span class="font-medium">1</span> a <span class="font-medium">{{ count($turmas ?? []) }}</span> de <span class="font-medium">{{ count($turmas ?? []) }}</span> resultados
             </div>
             <div class="flex items-center space-x-2">
                 <button class="px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50" disabled>

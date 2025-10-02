@@ -10,16 +10,18 @@ class Professor extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'professores';
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'role',
-        'especialidade',
+        'especialidades',
         'telefone',
         'data_admissao',
-        'turmas',
-        'disciplinas',
+        'turmas_ids',
+        'disciplinas_ids',
         'observacoes',
         'ativo'
     ];
@@ -32,6 +34,7 @@ class Professor extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'especialidades' => 'array',
         'turmas_ids' => 'array',
         'disciplinas_ids' => 'array',
         'ativo' => 'boolean',

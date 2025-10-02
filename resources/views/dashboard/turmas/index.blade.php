@@ -18,10 +18,10 @@
                     @endphp
                     
                     @if(in_array($userRole, ['admin', 'coordenador']))
-                    <button class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center space-x-2">
+                    <a href="{{ route('turmas.create') }}" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center space-x-2">
                         <i data-lucide="plus" class="h-4 w-4"></i>
                         <span>Nova Turma</span>
-                    </button>
+                    </a>
                     @endif
                     
                     @if($userRole === 'professor')

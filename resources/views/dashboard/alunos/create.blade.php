@@ -133,28 +133,38 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Turma -->
                                 <div>
-                                    <label for="turma" class="block text-sm font-medium text-slate-700 mb-2">Turma *</label>
-                                    <input type="text" 
-                                           id="turma" 
-                                           name="turma" 
-                                           value="{{ old('turma') }}"
-                                           class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('turma') border-red-500 @enderror"
-                                           required>
-                                    @error('turma')
+                                    <label for="turma_id" class="block text-sm font-medium text-slate-700 mb-2">Turma *</label>
+                                    <select id="turma_id" 
+                                            name="turma_id" 
+                                            class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('turma_id') border-red-500 @enderror"
+                                            required>
+                                        <option value="">Selecione a turma</option>
+                                        @foreach($turmas as $turma)
+                                            <option value="{{ $turma->id }}" {{ old('turma_id') == $turma->id ? 'selected' : '' }}>
+                                                {{ $turma->nome }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('turma_id')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <!-- Curso -->
                                 <div>
-                                    <label for="curso" class="block text-sm font-medium text-slate-700 mb-2">Curso *</label>
-                                    <input type="text" 
-                                           id="curso" 
-                                           name="curso" 
-                                           value="{{ old('curso') }}"
-                                           class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('curso') border-red-500 @enderror"
-                                           required>
-                                    @error('curso')
+                                    <label for="curso_id" class="block text-sm font-medium text-slate-700 mb-2">Curso *</label>
+                                    <select id="curso_id" 
+                                            name="curso_id" 
+                                            class="w-full border border-blue-200 rounded-lg px-3 py-2 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 @error('curso_id') border-red-500 @enderror"
+                                            required>
+                                        <option value="">Selecione o curso</option>
+                                        @foreach($cursos as $curso)
+                                            <option value="{{ $curso->id }}" {{ old('curso_id') == $curso->id ? 'selected' : '' }}>
+                                                {{ $curso->nome }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('curso_id')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>

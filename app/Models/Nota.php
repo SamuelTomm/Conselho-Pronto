@@ -14,6 +14,7 @@ class Nota extends Model
         'disciplina_id',
         'turma_id',
         'professor_id',
+        'trimestre_id',
         'nota1',
         'nota2',
         'nota3',
@@ -53,6 +54,11 @@ class Nota extends Model
     public function professor()
     {
         return $this->belongsTo(Professor::class);
+    }
+
+    public function trimestre()
+    {
+        return $this->belongsTo(Trimestre::class);
     }
 
     // Scopes

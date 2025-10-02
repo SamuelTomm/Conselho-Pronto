@@ -12,10 +12,10 @@
                     <p class="text-slate-600">Conselho Pronto - Sistema de Gestão Educacional</p>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center space-x-2">
+                    <a href="{{ route('professores.create') }}" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center space-x-2">
                         <i data-lucide="plus" class="h-4 w-4"></i>
                         <span>Novo Professor</span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                         <div>
                             <p class="text-sm font-medium text-slate-600">Total de Professores</p>
                             <p class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                                12
+                                {{ $totalProfessores }}
                             </p>
                         </div>
                         <div class="bg-gradient-to-r from-blue-100 to-blue-200 p-3 rounded-full">
@@ -44,7 +44,7 @@
                         <div>
                             <p class="text-sm font-medium text-slate-600">Professores Ativos</p>
                             <p class="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-                                10
+                                {{ $professoresAtivos }}
                             </p>
                         </div>
                         <div class="bg-gradient-to-r from-green-100 to-green-200 p-3 rounded-full">
@@ -59,7 +59,7 @@
                         <div>
                             <p class="text-sm font-medium text-slate-600">Coordenadores</p>
                             <p class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
-                                2
+                                {{ $coordenadores }}
                             </p>
                         </div>
                         <div class="bg-gradient-to-r from-purple-100 to-purple-200 p-3 rounded-full">
@@ -74,7 +74,7 @@
                         <div>
                             <p class="text-sm font-medium text-slate-600">Conselheiros</p>
                             <p class="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
-                                3
+                                {{ $conselheiros }}
                             </p>
                         </div>
                         <div class="bg-gradient-to-r from-orange-100 to-orange-200 p-3 rounded-full">
@@ -141,85 +141,34 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Dados mockados dos professores -->
-                                    @php
-                                        $professores = [
-                                            [
-                                                'id' => 1,
-                                                'nome' => 'Maria Silva',
-                                                'email' => 'maria.silva@ivoti.edu.br',
-                                                'funcao' => 'professor',
-                                                'turmas' => 3,
-                                                'status' => 'Ativo',
-                                                'avatar' => 'MS'
-                                            ],
-                                            [
-                                                'id' => 2,
-                                                'nome' => 'João Santos',
-                                                'email' => 'joao.santos@ivoti.edu.br',
-                                                'funcao' => 'coordenador',
-                                                'turmas' => 5,
-                                                'status' => 'Ativo',
-                                                'avatar' => 'JS'
-                                            ],
-                                            [
-                                                'id' => 3,
-                                                'nome' => 'Ana Costa',
-                                                'email' => 'ana.costa@ivoti.edu.br',
-                                                'funcao' => 'professor',
-                                                'turmas' => 2,
-                                                'status' => 'Ativo',
-                                                'avatar' => 'AC'
-                                            ],
-                                            [
-                                                'id' => 4,
-                                                'nome' => 'Carlos Lima',
-                                                'email' => 'carlos.lima@ivoti.edu.br',
-                                                'funcao' => 'conselheiro',
-                                                'turmas' => 4,
-                                                'status' => 'Ativo',
-                                                'avatar' => 'CL'
-                                            ],
-                                            [
-                                                'id' => 5,
-                                                'nome' => 'Lucia Ferreira',
-                                                'email' => 'lucia.ferreira@ivoti.edu.br',
-                                                'funcao' => 'professor',
-                                                'turmas' => 3,
-                                                'status' => 'Inativo',
-                                                'avatar' => 'LF'
-                                            ]
-                                        ];
-                                    @endphp
-                                    
-                                    @foreach($professores as $professor)
+                                    @forelse($professores as $professor)
                                     <tr class="hover:bg-blue-50/50 transition-colors">
                                         <td class="px-4 py-3">
                                             <div class="flex items-center space-x-3">
                                                 <!-- Avatar do Professor -->
                                                 <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
-                                                    {{ $professor['avatar'] }}
+                                                    {{ substr($professor->name, 0, 2) }}
                                                 </div>
                                                 <div>
-                                                    <div class="font-medium text-slate-800">{{ $professor['nome'] }}</div>
-                                                    <div class="text-sm text-gray-500">ID: {{ $professor['id'] }}</div>
+                                                    <div class="font-medium text-slate-800">{{ $professor->name }}</div>
+                                                    <div class="text-sm text-gray-500">ID: {{ $professor->id }}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-sm text-slate-700 px-4 py-3">{{ $professor['email'] }}</td>
+                                        <td class="text-sm text-slate-700 px-4 py-3">{{ $professor->email }}</td>
                                         <td class="px-4 py-3">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                                @if($professor['funcao'] == 'professor') bg-blue-100 text-blue-800
-                                                @elseif($professor['funcao'] == 'coordenador') bg-purple-100 text-purple-800
+                                                @if($professor->role == 'professor') bg-blue-100 text-blue-800
+                                                @elseif($professor->role == 'coordenador') bg-purple-100 text-purple-800
                                                 @else bg-orange-100 text-orange-800
                                                 @endif">
-                                                {{ ucfirst($professor['funcao']) }}
+                                                {{ ucfirst($professor->role) }}
                                             </span>
                                         </td>
-                                        <td class="text-sm text-slate-700 px-4 py-3">{{ $professor['turmas'] }} turmas</td>
+                                        <td class="text-sm text-slate-700 px-4 py-3">{{ count($professor->turmas_ids ?? []) }} turmas</td>
                                         <td class="px-4 py-3">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $professor['status'] == 'Ativo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $professor['status'] }}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $professor->ativo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ $professor->ativo ? 'Ativo' : 'Inativo' }}
                                             </span>
                                         </td>
                                         <td class="text-center px-4 py-3">
@@ -229,7 +178,7 @@
                                                     @click="open = !open" 
                                                     type="button" 
                                                     class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none" 
-                                                    id="menu-button-{{ $professor['id'] }}" 
+                                                    id="menu-button-{{ $professor->id }}" 
                                                     aria-expanded="true" 
                                                     aria-haspopup="true"
                                                 >
@@ -271,7 +220,17 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-8 text-gray-500">
+                                            <div class="flex flex-col items-center">
+                                                <i data-lucide="user-x" class="h-12 w-12 text-gray-300 mb-4"></i>
+                                                <p class="text-lg font-medium">Nenhum professor encontrado</p>
+                                                <p class="text-sm">Adicione professores para começar</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

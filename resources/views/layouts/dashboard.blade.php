@@ -288,8 +288,14 @@
                                  x-transition:leave-start="transform opacity-100 scale-100"
                                  x-transition:leave-end="transform opacity-0 scale-95"
                                  class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Perfil</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configurações</a>
+                                <a href="{{ route('profile.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                    <i data-lucide="user" class="h-4 w-4 mr-2"></i>
+                                    Perfil
+                                </a>
+                                <a href="{{ route('configuracoes') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                                    <i data-lucide="settings" class="h-4 w-4 mr-2"></i>
+                                    Configurações
+                                </a>
                                 <hr class="my-1">
                                 <form method="POST" action="{{ route('logout') }}" class="block">
                                     @csrf

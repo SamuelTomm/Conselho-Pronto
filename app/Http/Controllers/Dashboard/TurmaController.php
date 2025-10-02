@@ -83,9 +83,9 @@ class TurmaController extends Controller
     {
         $request->validate([
             'codigo' => 'required|string|max:255|unique:turmas',
-            'nome' => 'required|string|max:255',
-            'nivel' => 'required|in:Ensino Fundamental,Ensino Médio,Técnico',
-            'ano' => 'required|string|max:255',
+            'nome' => 'required|in:A,B,C,Magistério',
+            'nivel' => 'required|in:Ensino Médio',
+            'ano' => 'required|integer|min:1|max:12',
             'periodo' => 'required|in:Matutino,Vespertino,Noturno,Integral',
             'sala' => 'nullable|string|max:255',
             'conselheiro' => 'required|string|max:255',
@@ -113,9 +113,9 @@ class TurmaController extends Controller
     {
         $request->validate([
             'codigo' => 'required|string|max:255|unique:turmas,codigo,' . $turma->id,
-            'nome' => 'required|string|max:255',
-            'nivel' => 'required|in:Ensino Fundamental,Ensino Médio,Técnico',
-            'ano' => 'required|string|max:255',
+            'nome' => 'required|in:A,B,C,Magistério',
+            'nivel' => 'required|in:Ensino Médio',
+            'ano' => 'required|integer|min:1|max:12',
             'periodo' => 'required|in:Matutino,Vespertino,Noturno,Integral',
             'sala' => 'nullable|string|max:255',
             'conselheiro' => 'required|string|max:255',

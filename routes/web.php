@@ -34,11 +34,17 @@ Route::middleware(['auth.session'])->prefix('dashboard')->group(function () {
     Route::post('ciclos', [App\Http\Controllers\Dashboard\CicloController::class, 'store'])->name('ciclos.store');
     Route::put('ciclos/{id}', [App\Http\Controllers\Dashboard\CicloController::class, 'update'])->name('ciclos.update');
     Route::delete('ciclos/{id}', [App\Http\Controllers\Dashboard\CicloController::class, 'destroy'])->name('ciclos.destroy');
+    Route::get('ciclos/{id}/trimestres', [App\Http\Controllers\Dashboard\CicloController::class, 'getTrimestres'])->name('ciclos.trimestres');
+    Route::post('ciclos/{id}/trocar-trimestre', [App\Http\Controllers\Dashboard\CicloController::class, 'trocarTrimestreAtivo'])->name('ciclos.trocar-trimestre');
     
     // Módulos especiais
     Route::get('conselho-classe', [App\Http\Controllers\Dashboard\ConselhoClasseController::class, 'index'])->name('conselho-classe');
     Route::get('professor-turmas', [App\Http\Controllers\Dashboard\ProfessorTurmaController::class, 'index'])->name('professor-turmas');
     Route::get('configuracoes', [App\Http\Controllers\Dashboard\ConfiguracaoController::class, 'index'])->name('configuracoes');
+    
+    // Perfil do usuário
+    Route::get('profile', [App\Http\Controllers\Dashboard\ProfileController::class, 'index'])->name('profile.index');
+    Route::put('profile', [App\Http\Controllers\Dashboard\ProfileController::class, 'update'])->name('profile.update');
     
     // Rotas específicas para professores
     Route::prefix('professor')->group(function () {
@@ -46,6 +52,9 @@ Route::middleware(['auth.session'])->prefix('dashboard')->group(function () {
         Route::get('disciplinas', [App\Http\Controllers\Dashboard\ProfessorController::class, 'disciplinas'])->name('professor.disciplinas');
         Route::get('alunos', [App\Http\Controllers\Dashboard\ProfessorController::class, 'alunos'])->name('professor.alunos');
     });
+    
+    // Rota AJAX para buscar turmas e disciplinas por curso
+    Route::get('professores/turmas-disciplinas', [App\Http\Controllers\Dashboard\ProfessorController::class, 'getTurmasDisciplinas'])->name('professores.turmas-disciplinas');
     
     // Rotas para notas
     Route::resource('notas', App\Http\Controllers\Dashboard\NotaController::class);

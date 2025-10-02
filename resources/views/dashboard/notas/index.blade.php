@@ -100,38 +100,38 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($notasData as $nota)
+                            @forelse($notas as $nota)
                             <tr class="hover:bg-blue-50/50 transition-colors">
                                 <td class="px-4 py-3">
-                                    <div class="font-medium text-slate-800">{{ $nota['aluno_nome'] }}</div>
+                                    <div class="font-medium text-slate-800">{{ $nota->aluno->nome ?? 'N/A' }}</div>
                                 </td>
                                 <td class="px-4 py-3">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ $nota['turma'] }}
+                                        {{ $nota->turma->nome ?? 'N/A' }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-3 text-slate-700">{{ $nota['disciplina'] }}</td>
+                                <td class="px-4 py-3 text-slate-700">{{ $nota->disciplina->nome ?? 'N/A' }}</td>
                                 <td class="px-4 py-3 text-center">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                        {{ $nota['bimestre'] }}º
+                                        {{ $nota->periodo ?? 'N/A' }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-3 text-center font-medium">{{ $nota['nota1'] }}</td>
-                                <td class="px-4 py-3 text-center font-medium">{{ $nota['nota2'] }}</td>
-                                <td class="px-4 py-3 text-center font-medium">{{ $nota['nota3'] }}</td>
+                                <td class="px-4 py-3 text-center font-medium">{{ $nota->nota1 ?? 'N/A' }}</td>
+                                <td class="px-4 py-3 text-center font-medium">{{ $nota->nota2 ?? 'N/A' }}</td>
+                                <td class="px-4 py-3 text-center font-medium">{{ $nota->nota3 ?? 'N/A' }}</td>
                                 <td class="px-4 py-3 text-center">
-                                    <span class="font-bold text-lg {{ $nota['media'] >= 7 ? 'text-green-600' : 'text-red-600' }}">
-                                        {{ number_format($nota['media'], 1) }}
-                                    </span>
-                                </td>
-                                <td class="px-4 py-3 text-center">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $nota['faltas'] <= 2 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                        {{ $nota['faltas'] }}
+                                    <span class="font-bold text-lg {{ ($nota->media ?? 0) >= 7 ? 'text-green-600' : 'text-red-600' }}">
+                                        {{ number_format($nota->media ?? 0, 1) }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-center">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $nota['status'] === 'Aprovado' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                        {{ $nota['status'] }}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        N/A
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ ($nota->media ?? 0) >= 7 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                        {{ ($nota->media ?? 0) >= 7 ? 'Aprovado' : 'Reprovado' }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-center">
